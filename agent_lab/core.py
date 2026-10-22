@@ -37,14 +37,3 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 
-
-def main() -> None:
-    example = "An AI assistant drafts scheduling replies for human staff approval."
-    result = evaluate(example, dict.fromkeys(REQUIRED, True))
-    print(f"Decision: {result.decision} | Control coverage: {result.score:.0%}")
-    for role in ROLES:
-        print(f"{role}: {result.stages[role]}")
-
-
-if __name__ == "__main__":
-    main()
