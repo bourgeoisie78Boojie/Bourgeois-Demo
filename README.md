@@ -1,33 +1,35 @@
-# BourgeoisAI — Agent Governance Demo
+# BourgeoisAI — Agent Governance Lab
 
-A public, self-contained demonstration of a **bounded AI governance review pipeline**, adapted from the BourgeoisAI Agent Governance Lab at https://www.bourgeoisai.com/agents.
+Public source for [aicraftmaster.com](https://aicraftmaster.com/), a governed multi-agent review demonstration.
 
-This public edition uses deterministic evaluation, **not live LLM inference**. It contains no proprietary backend code, API keys, or production integration.
+## What actually runs
 
-## Workflow
+The website calls the existing BourgeoisAI production inference endpoint through a Vercel rewrite. It makes **five inference requests per completed review**: four sequential specialist reviews and a final synthesis. It does **not** execute LangChain, LangGraph, CrewAI or AutoGen libraries on the server. Framework selection conditions the architecture prompts. `framework_examples.py` contains **dependency-free illustrative patterns**, not framework integrations.
 
-1. Architecture — define boundaries, components and human approval points
-2. Security — flag sensitive data, injection and access-control risks
-3. Governance — establish prohibited actions, review gates and traceability
-4. Evaluation — score required controls and identify gaps
+`agent_lab/` and `demo.html` provide an **offline deterministic example**; they do not call an LLM.
 
-## Run
+## Run local checks
 
-Requires Python 3.11+; no external packages.
+Python 3.11+ and Node.js 20+:
 
 ```bash
 python -m unittest discover -v
-python -m agent_lab.core
+node --check public/assets/agents/agent-governance-lab.js
+node --test tests/*.test.mjs
 ```
 
-## Framework reference
+## Safety and limitations
 
-The private production lab includes LangChain, LangGraph, CrewAI and AutoGen examples. This repository deliberately demonstrates the shared governance/evaluation contract **without claiming to execute those frameworks**.
+- Never enter protected health information, credentials, or confidential customer data.
+- This demo produces architectural guidance, **not medical advice or compliance certification**.
+- The live inference endpoint is hosted in a **separate private production repository** and enforces its own rate limits and entitlements. A public-site browser limit is only a usability safeguard, not a security boundary.
+- Production currently has per-network and per-identity AI limits. The public rewrite does **not** independently authenticate a demo identity or guarantee a separate hard quota. Treat this as a remaining deployment-security limitation.
+- Never store provider credentials in this repository or in browser code.
 
-## Safety
+## Security
 
-Synthetic use cases only. No PHI, secrets, live model calls, clinical decision support or autonomous external actions.
+See [SECURITY.md](SECURITY.md) for reporting instructions and supported scope. CI validates Python examples, frontend JavaScript syntax, security invariants and common secret patterns. These checks do not replace GitHub secret scanning, branch protection, provider billing alerts, or production-side abuse monitoring.
 
-## Related live interface
+## Ownership
 
-https://www.bourgeoisai.com/agents ..
+Copyright © 2026 BourgeoisAI. All rights reserved unless a separate license is explicitly granted.
