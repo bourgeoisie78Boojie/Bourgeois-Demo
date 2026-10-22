@@ -30,4 +30,4 @@ Synthetic use cases only. No PHI, secrets, live model calls, clinical decision s
 
 ## Related live interface
 
-https://www.bourgeoisai.com/agents
+https://www.bourgeoisai.com/agents ..
