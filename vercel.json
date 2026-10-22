@@ -2,11 +2,5 @@
   "version": 2,
   "buildCommand": null,
   "outputDirectory": "public",
-  "cleanUrls": true,
-  "rewrites": [
-    {
-      "source": "/api/inference",
-      "destination": "https://www.bourgeoisai.com/api/inference"
-    }
-  ]
+  "cleanUrls": true
 }
