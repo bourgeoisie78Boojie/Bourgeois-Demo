@@ -23,7 +23,7 @@ async function consume(url,token,key,limit,windowSec){
 }
 export default async function handler(req,res){
   if(req.method!=='POST')return json(res,405,{error:'POST required'});
-  const url=process.env.UPSTASH_REDIS_REST_URL,token=process.env.UPSTASH_REDIS_REST_TOKEN;
+  const url=process.env.UPSTASH_REDIS_REST_URL||process.env.KV_REST_API_URL,token=process.env.UPSTASH_REDIS_REST_TOKEN||process.env.KV_REST_API_TOKEN;
   if(!url||!token)return json(res,503,{error:'Demo quota service not configured'});
   const ip=getIp(req);
   if(!ip)return json(res,403,{error:'Client identity unavailable'});
