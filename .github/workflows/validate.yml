@@ -7,10 +7,21 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - run: python -m compileall -q agent_lab
       - run: python -m unittest discover -v
+      - run: node --check public/assets/agents/agent-governance-lab.js
+      - run: node --test tests/*.test.mjs
+      - name: Check tracked files for common credential formats
+        run: |
+          if git grep -nEI '(sk-proj-[A-Za-z0-9_-]{12,}|sk-[A-Za-z0-9]{24,}|gh[pousr]_[A-Za-z0-9]{30,}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|SUPABASE_SERVICE_ROLE_KEY[[:space:]]*[:=][[:space:]]*[^$[:space:]])' -- ':!*.md'; then
+            echo 'Potential credential in tracked files'; exit 1
+          fi
