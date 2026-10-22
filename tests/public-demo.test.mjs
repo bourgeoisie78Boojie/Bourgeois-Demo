@@ -24,7 +24,10 @@ test('public site warns against sensitive data and links to source',()=>{
  assert.match(html,/Bourgeois-Demo/);
 });
 test('inference proxy only forwards the intended path',()=>{
- assert.equal(vercel.rewrites.length,1);
- assert.equal(vercel.rewrites[0].source,'/api/inference');
- assert.equal(vercel.rewrites[0].destination,'https://www.bourgeoisai.com/api/inference');
+ assert.ok(!vercel.rewrites?.some(rule=>rule.source==='/api/inference'));
+ const gateway=readFileSync('api/inference.js','utf8');
+ assert.match(gateway,/MINUTE_LIMIT=10/);
+ assert.match(gateway,/DAY_LIMIT=30/);
+ assert.match(gateway,/Demo quota service not configured/);
+ assert.match(gateway,/Demo quota temporarily unavailable/);
 });
