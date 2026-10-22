@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BourgeoisAI | Public Agent Governance Demo</title>
+<style>
+body{margin:0;background:#0c1322;color:#eaf0f8;font:16px system-ui,sans-serif}
+main{max-width:960px;margin:auto;padding:38px 20px}
+h1{font-size:clamp(2rem,5vw,3.5rem)}
+p{color:#b9c9db}
+.panel{background:#172236;border:1px solid #34445b;border-radius:16px;padding:24px;margin:18px 0}
+textarea{width:100%;box-sizing:border-box;min-height:120px;background:#0d1627;color:white;border:1px solid #4d607a;border-radius:8px;padding:12px;font:inherit}
+button{background:#54a9f9;border:0;border-radius:8px;padding:12px 18px;font-weight:700;cursor:pointer}
+li{padding:7px}
+.good{color:#83e4bb}.warn{color:#ffcb80}
+a{color:#8cc7ff}
+</style></head>
+<body><main>
+<h1>Agent Governance Lab — Public Demo</h1>
+<p>Explore a bounded four-stage AI review workflow with synthetic data. This standalone version uses deterministic checks; it does not call an LLM or your production APIs.</p>
+<section class="panel"><label for="case">Synthetic use case</label>
+<textarea id="case">An assistant prepares scheduling responses for staff review without sending messages automatically.</textarea>
+<h2>Required controls</h2>
+<div id="checks"></div><p><button id="run">Evaluate governance readiness</button></p></section>
+<section class="panel" aria-live="polite"><h2>Review pipeline</h2><ol id="stages"></ol><h2 id="decision">Awaiting evaluation</h2><p id="score"></p></section>
+<p>Production reference: <a href="https://www.bourgeoisai.com/agents">BourgeoisAI Agent Governance Lab</a>. Source and automated tests are available in this repository.</p>
+<script>
+const controls=["Human approval","Audit logging","Least privilege","Bounded execution"];
+const stages=["Architecture","Security","Governance","Adversarial evaluation"];
+document.querySelector("#checks").replaceChildren(...controls.map((name,i)=>{
+ const label=document.createElement("label");label.style.display="block";
+ const input=document.createElement("input");input.type="checkbox";input.checked=i===0;
+ label.append(input," "+name);return label;
+}));
+document.querySelector("#run").addEventListener("click",()=>{
+ const input=document.querySelector("#case").value.trim();
+ if(input.length<20){document.querySelector("#decision").textContent="Provide a longer synthetic use case";return}
+ const checked=[...document.querySelectorAll("#checks input")].filter(x=>x.checked).length;
+ const list=document.querySelector("#stages");list.replaceChildren();
+ stages.forEach(name=>{const li=document.createElement("li");li.textContent=name+" — reviewed";list.append(li)});
+ const ready=checked===controls.length;
+ const decision=document.querySelector("#decision");decision.textContent=ready?"PILOT READY WITH CONTROLS":"NOT READY";
+ decision.className=ready?"good":"warn";
+ document.querySelector("#score").textContent="Required control coverage: "+Math.round(100*checked/controls.length)+"%";
+});
+</script></main></body></html>
