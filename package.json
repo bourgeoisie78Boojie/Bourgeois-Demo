@@ -1,0 +1,14 @@
+{
+  "name": "bourgeois-demo",
+  "version": "1.0.0",
+  "description": "BourgeoisAI Agent Governance Lab - Public Demo",
+  "private": true,
+  "scripts": {
+    "test": "python -m pytest",
+    "lint": "echo 'No linting configured'"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.4.1"
+  },
+  "devDependencies": {}
+}
